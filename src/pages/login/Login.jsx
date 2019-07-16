@@ -5,7 +5,7 @@ import { Form, Icon, Input, Button, message} from 'antd'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import {reqLogin} from '../../api'
-import logo from './images/logo.png'
+import logo from '../../assets/images/logo.png'
 import './Login.less'
 
 const Item = Form.Item
@@ -155,6 +155,9 @@ class Login extends Component {
   函数接收一个组件, 返回一个新的组件
   Form.create()返回的就是一个高阶组件
 */
+
+
+/* 经 Form.create() 包装过的组件会自带 this.props.form 属性 */
 const WrapperForm = Form.create()(Login)
 export default WrapperForm
 
