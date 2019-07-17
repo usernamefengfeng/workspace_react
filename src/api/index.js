@@ -44,6 +44,34 @@ export const reqWeather = (city) => {
   })
 }
 
+//获取分类列表
+/* export const reqCategorys = () => ajax.get(BASE + '/manage/category/list')
+
+export const reqCategorys = () => ajax({
+  method:'GET',
+  url:BASE + '/manage/category/list'
+}) */
+export const reqCategorys = () => ajax(BASE + '/manage/category/list')
+//添加分类
+export const reqAddCategory = (categoryName) => ajax.post(BASE + '/manage/category/add',{
+  categoryName
+})
+//修改分类
+export const reqUpdateCategory = ({categoryId,categoryName}) => ajax.post(BASE + '/manage/category/update',{
+  categoryId,
+  categoryName
+})
+
+
+//获取商品的分页列表
+export const reqProducts = (pageNum,pageSize) => ajax(BASE + '/manage/product/list',{
+  params:{  //包含所有query参数的对象
+    pageNum,
+    pageSize
+  }
+})
+
+
 /* const name = 'admin'
 const pwd = 'admin'
 reqLogin(name,pwd).then(result=>{
