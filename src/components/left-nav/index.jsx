@@ -3,7 +3,7 @@ import {Link,withRouter} from 'react-router-dom'
 import { Menu, Icon } from 'antd'
 
 import logo from '../../assets/images/logo.png'
-//import menuList from '../../config/menuConfig'
+import menuList from '../../config/menuConfig'
 import './index.less'
 
 
@@ -59,16 +59,16 @@ class LeftNav extends Component {
   getMenuNodes = (menuList) =>{
     //得到当前请求路由路径
     const path = this.props.location.pathname
-
+    console.log(path)  //---/home
     return menuList.reduce((pre,item)=>{
       //向pre添加menu.item
       if(!item.children){
         pre.push((
           <Menu.Item key={item.key}>
-            <link to={item.key}>
+            <Link to={item.key}>
               <Icon type={item.icon} />
               <span>{item.title}</span>
-            </link>
+            </Link>
           </Menu.Item>
         ))
       }else{
@@ -99,9 +99,10 @@ class LeftNav extends Component {
   }
 
 
-  // componentWillMount(){
-  //   this.menuNodes = this.getMenuNodes(menuList)
-  // }
+  //DOM即将挂载到页面上
+  componentWillMount(){
+    this.menuNodes = this.getMenuNodes(menuList)
+  }
 
   render() {
 
@@ -123,7 +124,7 @@ class LeftNav extends Component {
           theme="dark"
         >
           {
-            this.getMenuNodes
+            this.menuNodes
           }
         </Menu>
         {/* <Menu
