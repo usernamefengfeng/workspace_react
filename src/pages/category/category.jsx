@@ -1,12 +1,13 @@
-import React from 'react'
-
-/*
-Home路由组件
+import React, { Component } from 'react'
+/**
+ * 分类管理
  */
-export default function Home(props) {
-  return (
-    <div>
-      category
-    </div>
-  )
+export default class Category extends Component {
+  render() {
+    return (
+      <div>
+        Category
+      </div>
+    )
+  }
 }
