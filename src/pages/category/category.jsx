@@ -61,8 +61,6 @@ export default class Category extends Component {
 
   //点击按钮添加数据
   handleOk = () => {
-    //重置输入的数据(变成初始值)
-    this.form.resetFields()
 
     //进行表单的验证
     this.form.validateFields(async (err,values)=>{
@@ -80,6 +78,9 @@ export default class Category extends Component {
           const categoryId = this.category._id
           result = await reqUpdateCategory(categoryId,categoryName)
         }
+
+        //重置输入的数据(变成初始值)
+        this.form.resetFields()
         //更新添加后列表数据状态
         this.setState({showStatus:0})
 
