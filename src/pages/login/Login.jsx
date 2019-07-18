@@ -13,7 +13,7 @@ const Item = Form.Item
 class Login extends Component {
   
   handleSubmit = e => {
-    // 阻止事件的默认行为: 阻止表单的提交
+    // 阻止事件的默认行为: 阻止form表单里的按钮的提交
     e.preventDefault()
     // 取出输入的相关的数据
     // const form = this.props.form

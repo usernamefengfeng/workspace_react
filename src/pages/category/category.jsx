@@ -30,7 +30,7 @@ export default class Category extends Component {
         title: '操作',
         width:300,
         render:(category)=> <LinkButton onClick={()=>{
-          this.category = category  //保存当前分类，其他地方都可以读到
+          this.category = category || '' //保存当前分类，其他地方都可以读到
           console.log(category)
           this.setState({showStatus:2})
         }}>修改分类</LinkButton>
@@ -52,6 +52,7 @@ export default class Category extends Component {
     if(result.status === 0) { //成功
       //取出分类列表
       const categorys = result.data
+      console.log(categorys)
       //更新状态Categorys数据
       this.setState({categorys})
     }else{ //失败
@@ -65,6 +66,7 @@ export default class Category extends Component {
 
     //进行表单的验证
     this.form.validateFields(async (err,values)=>{
+      //没有错误--成功的状态下--showStatus不为0的状态
       if(!err){
         //验证通过，得到数据
         const {categoryName} = values
@@ -77,7 +79,11 @@ export default class Category extends Component {
           result = await reqAddCategory(categoryName)
         }else{  //修改
           const categoryId = this.category._id
-          result = await reqUpdateCategory(categoryId,categoryName)
+          console.log(categoryId)  //--可以拿到
+          console.log(categoryName)
+          result = await reqUpdateCategory({categoryId,categoryName})
+          console.log(result.name)
+          console.log(result)
         }
 
         //重置输入的数据(变成初始值)
