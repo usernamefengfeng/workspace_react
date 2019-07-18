@@ -31,6 +31,7 @@ export default class Category extends Component {
         width:300,
         render:(category)=> <LinkButton onClick={()=>{
           this.category = category  //保存当前分类，其他地方都可以读到
+          console.log(category)
           this.setState({showStatus:2})
         }}>修改分类</LinkButton>
       },
@@ -81,7 +82,7 @@ export default class Category extends Component {
 
         //重置输入的数据(变成初始值)
         this.form.resetFields()
-        //更新添加后列表数据状态
+        //更新添加列表数据后--状态--隐藏对话框
         this.setState({showStatus:0})
 
         const action = showStatus===1? '添加':'修改'
