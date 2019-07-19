@@ -1,3 +1,6 @@
+/* 
+  登录界面
+*/
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom'
 import { Form, Icon, Input, Button, message} from 'antd'
@@ -30,10 +33,11 @@ class Login extends Component {
         //等待拿到数据
         const result = await reqLogin(username,password)
 
-        //通过状态码判断登录成功/失败
-        if(result.status === 0){
-          //将user信息保存到local中
+        //通过状态码-----判断登录成功/失败
+        if(result.status === 0){  //成功
+          //拿到数据--user
           const user = result.data
+          //将user信息保存到local中
           storageUtils.saveUser(user)
           //保存到内存
           memoryUtils.user = user

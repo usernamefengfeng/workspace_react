@@ -52,16 +52,17 @@ export const reqCategorys = () => ajax({
   url:BASE + '/manage/category/list'
 }) */
 export const reqCategorys = () => ajax(BASE + '/manage/category/list')
+
 //添加分类
 export const reqAddCategory = (categoryName) => ajax.post(BASE + '/manage/category/add',{
   categoryName
 })
+
 //修改分类
 export const reqUpdateCategory = ({categoryId,categoryName}) => ajax.post(BASE + '/manage/category/update',{
   categoryId,
   categoryName
 })
-
 
 //获取商品的分页列表
 export const reqProducts = (pageNum,pageSize) => ajax(BASE + '/manage/product/list',{
@@ -70,6 +71,30 @@ export const reqProducts = (pageNum,pageSize) => ajax(BASE + '/manage/product/li
     pageSize
   }
 })
+
+//商品分页列表的搜索--名称/描述内容
+export const reqSearchProducts = ({pageNum,pageSize,searchName,searchType}) => ajax(BASE + '/manage/product/search',{
+  params:{
+    pageNum,
+    pageSize,
+    searchType:searchName
+  }
+})
+
+//商品的状态更新
+
+/* export const reqUpdateStatus = (productId,status) => ajax(BASE + '/manage/category/update',{
+  method:'POST',
+  data:{
+    productId,
+    status
+  }
+}) */
+export const reqUpdateStatus = (productId,status) => ajax.post(BASE + '/manage/category/update',{
+  productId,
+  status
+})
+
 
 
 /* const name = 'admin'

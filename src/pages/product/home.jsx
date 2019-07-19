@@ -5,11 +5,13 @@ import {
   Select,
   Icon,
   Table,
-  Button
+  Button,
+  message
 } from 'antd'
 
-import {reqProducts} from '../../api'
+import {reqProducts,reqSearchProducts, reqUpdateStatus} from '../../api'
 import LinkButton from '../../components/link-button'
+import {PAGE_SIZE} from '../../utils/constans'
 
 const Option = Select.Option
 
@@ -22,6 +24,24 @@ export default class ProductHome extends Component {
     loading:false,  //加载loading默认为不显示
     products:[],    //商品列表数据
     total:0,        //商品的总数量
+    searchType:'productName',  //默认是按名称搜索
+    searchName:'',   //搜索的关键字
+  }
+
+  //更新商品状态-----在售/已下架
+  updateStatus = async (productId,status) => {
+    
+    //计算更新后的值
+    status = status === 1? 2:1
+    //请求更新
+    const result = await reqUpdateStatus(productId,status)
+    //数据请求成功
+    if (result.status === 0) {
+      //显示成功
+      message.success('商品更新成功')
+      //获取当前页面
+      this.getProducts(this.pageNum)
+    }
   }
 
   initColumns = () => {
@@ -42,7 +62,7 @@ export default class ProductHome extends Component {
       {
         title:'状态',
         dataIndex:'status',
-        render:(status)=>{
+        render:({status,_id})=>{
           let btnText = '下架'
           let text = '在售'
           if(status === 2){
@@ -51,7 +71,7 @@ export default class ProductHome extends Component {
           }
           return (
             <span>
-              <button>{btnText}</button>
+              <button onClick={()=>this.updateStatus(status,_id)} >{btnText}</button>
               <span>{text}</span>
             </span>
           )
@@ -61,8 +81,9 @@ export default class ProductHome extends Component {
         title:'操作',
         render:(product)=>(
           <span>
-            <LinkButton>详情</LinkButton>
-            <LinkButton>修改</LinkButton>
+            {/* 将product对象使用state传递给目标路由组件 */}
+            <LinkButton onClick={()=>this.props.history.push('/product/detail')}>详情</LinkButton>
+            <LinkButton onClick={()=>this.props.history.push('/product/addupdate')}>修改</LinkButton>
           </span>
         )
       }
@@ -71,8 +92,16 @@ export default class ProductHome extends Component {
 
   //异步获取指定页码的商品列表显示
   getProducts = async (pageNum) => {
+    //保存当前请求的页码
+    this.pageNum = pageNum
+    const {searchType,searchName} = this.state
     //发送请求获取数据
-    const result = await reqProducts(pageNum,2)
+    let result
+    if (!searchName) {
+      result = await reqProducts(pageNum,PAGE_SIZE)
+    } else {
+      result = await reqSearchProducts({pageNum,pageSize:PAGE_SIZE,searchName,searchType})
+    }
     
     //判断是否获取数据成功
     if(result.status === 0){
@@ -97,14 +126,25 @@ export default class ProductHome extends Component {
 
   render() {
 
+    const {total, products, loading, searchType, searchName} = this.state
+
     const title = (
       <span>
-        <Select style={{width:200}} value="1" >
-          <option value="1">按名称搜索</option>
-          <option value="2">按描述搜索</option>
+        <Select
+         style={{width:200}} 
+         value={searchType}
+         onChange={(value)=>this.setState({searchType:value})} 
+         >
+          <Option value="productName">按名称搜索</Option>
+          <Option value="productDesc">按描述搜索</Option>
         </Select>
-        <Input style={{width:200,margin:'0 10px'}} placeholder="请输入关键字" />
-        <Button type="primary">搜索</Button>
+        <Input
+         style={{width:200,margin:'0 10px'}} 
+         placeholder="请输入关键字"
+         value={searchName}
+         onChange={(event)=>this.setState({searchName:event.target.value})} 
+          />
+        <Button type="primary" onChange={()=>this.getProducts(1)} >搜索</Button>
       </span>
     )
     
@@ -114,8 +154,6 @@ export default class ProductHome extends Component {
         添加商品
       </Button>
     )
-
-    const {total, products, loading} = this.state
 
     return (
       <Card title={title} extra={extra}>
@@ -127,9 +165,10 @@ export default class ProductHome extends Component {
           dataSource={products}
           pagination={{
             total,
-            defaultPageSize:2,
+            defaultPageSize:PAGE_SIZE,
             showQuickJumper:true,
-            onChange:this.getProducts
+            onChange:this.getProducts,
+            current:this.pageNum
           }}
         />
       </Card>

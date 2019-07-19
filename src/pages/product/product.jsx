@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import ProductHome from './home'
 import ProductAddUpdate from './addupdate'
 import ProductDetail from './detail'
+import './product.less'
 /**
  * 商品管理
  */
