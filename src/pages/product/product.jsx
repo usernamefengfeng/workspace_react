@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import ProductHome from './home'
-import ProductAddUpdate from './addupdate'
+import ProductAddUpdate from './add-update'
 import ProductDetail from './detail'
 import './product.less'
 /**
