@@ -90,17 +90,17 @@ export const reqSearchProducts = ({pageNum,pageSize,searchName,searchType}) => a
 })
 
 //商品的状态更新--上下架处理
-/* export const reqUpdateStatus = (productId,status) => ajax(BASE + '/manage/category/update',{
+export const reqUpdateStatus = (productId,status) => ajax(BASE + '/manage/product/updateStatus',{
   method:'POST',
   data:{
     productId,
     status
   }
-}) */
-export const reqUpdateStatus = (productId,status) => ajax.post(BASE + '/manage/category/update',{
+})
+/* export const reqUpdateStatus = (productId,status) => ajax.post(BASE + '//manage/product/updateStatus',{
   productId,
   status
-})
+}) */
 
 
 

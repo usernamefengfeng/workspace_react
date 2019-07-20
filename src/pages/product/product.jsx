@@ -12,10 +12,10 @@ export default class Product extends Component {
   render() {
     return (
       <Switch>
-        <Route to="/product" exact component={ProductHome} />
-        <Route to="/product/addupdate" component={ProductAddUpdate} />
-        <Route to="/product/detail" component={ProductDetail} />
-        <Redirect to="product" />
+        <Route path="/product" exact component={ProductHome} />
+        <Route path="/product/addupdate" component={ProductAddUpdate} />
+        <Route path="/product/detail" component={ProductDetail} />
+        <Redirect to="/product" /> 
       </Switch>
     )
   }

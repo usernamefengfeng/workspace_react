@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Card, Icon, Select, Input, Form, Button, message} from 'antd'
+import {Card, Icon, Select, Input, Form, Button } from 'antd'
 
 import LinkButton from '../../components/link-button'
 //import PicturesWall from './pictures-wall'
@@ -49,9 +49,9 @@ class AddUpdateProduct extends Component {
    event.preventDefault()
    //进行统一的表单验证
    this.props.form.validateFields((err,values) => {
-     if (!err) {
-       const {name,desc,pirce,categoryId} = values
-     }
+    //  if (!err) {
+    //    const {name,desc,pirce,categoryId} = values
+    //  }
    })
   }
 

@@ -12,6 +12,7 @@ import {
 import {reqProducts,reqSearchProducts, reqUpdateStatus} from '../../api'
 import LinkButton from '../../components/link-button'
 import {PAGE_SIZE} from '../../utils/constans'
+import memoryUtils from '../../utils/memoryUtils';
 
 const Option = Select.Option
 
@@ -32,9 +33,12 @@ export default class ProductHome extends Component {
   updateStatus = async (productId,status) => {
     
     //计算更新后的值
-    status = status === 1? 2:1
+    status = status === 1? 2 : 1
+  
     //请求更新
     const result = await reqUpdateStatus(productId,status)
+    //console.log(productId,status)
+    //console.log(result)
     //数据请求成功
     if (result.status === 0) {
       //显示成功
@@ -61,17 +65,20 @@ export default class ProductHome extends Component {
       },
       {
         title:'状态',
-        dataIndex:'status',
-        render:({status,_id})=>{
+        width:100,
+        // dataIndex:'status',
+        render:({_id,status})=>{
           let btnText = '下架'
           let text = '在售'
+          console.log(_id,status)
           if(status === 2){
+            console.log('+++++----')
             btnText = '上架'
             text = '已下架'
           }
           return (
             <span>
-              <button onClick={()=>this.updateStatus(status,_id)} >{btnText}</button>
+              <button onClick={()=>{this.updateStatus(_id,status)}} >{btnText}</button><br/>
               <span>{text}</span>
             </span>
           )
@@ -82,8 +89,17 @@ export default class ProductHome extends Component {
         render:(product)=>(
           <span>
             {/* 将product对象使用state传递给目标路由组件 */}
-            <LinkButton onClick={()=>this.props.history.push('/product/detail')}>详情</LinkButton>
-            <LinkButton onClick={()=>this.props.history.push('/product/addupdate')}>修改</LinkButton>
+            <LinkButton onClick={()=>{
+              //在内存中保存product
+              
+             memoryUtils.product = product
+              this.props.history.push('/product/detail')
+            }}>详情</LinkButton>
+            <LinkButton onClick={()=>{
+              //在内存中保存product
+              memoryUtils.product = product
+              this.props.history.push('/product/addupdate')
+            }}>修改</LinkButton>
           </span>
         )
       }
@@ -99,8 +115,10 @@ export default class ProductHome extends Component {
     let result
     if (!searchName) {
       result = await reqProducts(pageNum,PAGE_SIZE)
+      //console.log('-----')
     } else {
       result = await reqSearchProducts({pageNum,pageSize:PAGE_SIZE,searchName,searchType})
+      //console.log('++++++')
     }
     
     //判断是否获取数据成功
@@ -110,7 +128,7 @@ export default class ProductHome extends Component {
       //更新状态
       this.setState({
         total,
-        product:list
+        products:list
       })
     }
   }
@@ -144,7 +162,7 @@ export default class ProductHome extends Component {
          value={searchName}
          onChange={(event)=>this.setState({searchName:event.target.value})} 
           />
-        <Button type="primary" onChange={()=>this.getProducts(1)} >搜索</Button>
+        <Button type="primary" onClick={()=>this.getProducts(1)} >搜索</Button>
       </span>
     )
     

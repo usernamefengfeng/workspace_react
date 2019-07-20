@@ -36,7 +36,6 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-
     //读取携带过来的state数据 
     const {categoryName} = this.state
     const product = memoryUtils.product
