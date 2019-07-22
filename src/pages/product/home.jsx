@@ -8,6 +8,7 @@ import {
   Button,
   message
 } from 'antd'
+//引入节流函数
 import throttle from 'lodash.throttle'
 
 import {reqProducts,reqSearchProducts, reqUpdateStatus} from '../../api'
@@ -71,7 +72,7 @@ export default class ProductHome extends Component {
         render:({_id,status})=>{
           let btnText = '下架'
           let text = '在售'
-          console.log(_id,status)
+          //console.log(_id,status)
           if(status === 2){
             //console.log('+++++----')
             btnText = '上架'
@@ -153,7 +154,7 @@ export default class ProductHome extends Component {
       <span>
         <Select
          style={{width:200}} 
-         value={searchType}
+         value={searchType}  //搜索类型
          onChange={(value)=>this.setState({searchType:value})} 
          >
           <Option value="productName">按名称搜索</Option>
@@ -167,7 +168,7 @@ export default class ProductHome extends Component {
           />
         <Button type="primary" onClick={()=>{
           this.isSearch = true
-          this.getProducts(1)
+          this.getProducts(1)  //默认显示从第一页开始
         }} >搜索</Button>
       </span>
     )
@@ -175,7 +176,7 @@ export default class ProductHome extends Component {
     const extra = (
       <Button type='primary' onClick={()=>{
         memoryUtils.product = {}
-        this.props.history.push('/product/addupdate')
+        this.props.history.push('/product/addupdate') //添加商品路径的跳转
       }}>
         <Icon type='plus' />
         添加商品
@@ -192,10 +193,10 @@ export default class ProductHome extends Component {
           dataSource={products}
           pagination={{
             total,
-            defaultPageSize:PAGE_SIZE,
+            defaultPageSize:PAGE_SIZE,  //每页条目数
             showQuickJumper:true,
             onChange:this.getProducts,
-            current:this.pageNum
+            current:this.pageNum        //页码
           }}
         />
       </Card>

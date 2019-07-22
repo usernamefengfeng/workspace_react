@@ -78,7 +78,6 @@ class LeftNav extends Component {
         if(cItem){
           this.openKey = item.key
         }
-
         // 向pre添加<SubMenu>
         pre.push((
           <SubMenu
@@ -119,7 +118,7 @@ class LeftNav extends Component {
 
         <Menu
           selectedKeys={[path]}
-          defaultOpenKeys={[openKey]}
+          defaultOpenKeys={[openKey]}  //默认打开列表子项item
           mode="inline"
           theme="dark"
         >

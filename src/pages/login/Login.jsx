@@ -81,6 +81,7 @@ class Login extends Component {
   render() {
     //读取保存的user，如果存在的话，就直接跳转到管理界面
     const user = memoryUtils.user
+    //用户已登录的情况下
     if(user._id){
        return <Redirect to='/'/>   //---自动跳转到指定路径
     }
@@ -94,7 +95,6 @@ class Login extends Component {
         </div>
         <div className="login-content">
           <h1>用户登陆</h1>
-
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
               {
@@ -149,7 +149,7 @@ class Login extends Component {
 /* 
 理解Form组件: 包含<Form>的组件
 利用Form.create()包装Form组件生成一个新的组件
-新组件会向form组件传递一个强大的属性: 属性名: form, 属性值对象
+新组件会向form组件传递一个强大的属性: 属性名: form, 属性值：对象
 高阶函数
   定义: 接收的参数是函数或者返回值是函数
   常见的: 数组遍历相关的方法 / 定时器 / Promise / 高阶组件

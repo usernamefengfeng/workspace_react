@@ -32,7 +32,7 @@ export default class Category extends Component {
         render:(category)=> <LinkButton onClick={()=>{
           this.category = category  //保存当前分类，其他地方都可以读到
           //console.log(category)
-          this.setState({showStatus:2})
+          this.setState({showStatus:2})  //修改分类--显示对话框
         }}>修改分类</LinkButton>
       },
     ];
@@ -51,7 +51,7 @@ export default class Category extends Component {
     //判断数据是否请求成功
     if(result.status === 0) { //成功
       //取出分类列表
-      const categorys = result.data
+      const categorys = result.data  //categorys--[{},{}]数组形式
       console.log(categorys)
       //更新状态Categorys数据
       this.setState({categorys})
@@ -81,12 +81,13 @@ export default class Category extends Component {
           const categoryId = this.category._id
           //console.log(categoryId)  //--可以拿到
           //console.log(categoryName)
+          //发送更新修改的请求
           result = await reqUpdateCategory({categoryId,categoryName})
-          console.log(result.name)
-          console.log(result)
+          //console.log(result.name)
+          //console.log(result)
         }
 
-        //重置输入的数据(变成初始值)
+        //重置输入的数据(变成初始值)--清空输入框
         this.form.resetFields()
         //更新添加列表数据后--状态--隐藏对话框
         this.setState({showStatus:0})
@@ -94,7 +95,7 @@ export default class Category extends Component {
         const action = showStatus===1? '添加':'修改'
         //根据响应的结果，做出不同的处理
         if(result.status === 0){
-          //重新获取分类列表显示
+          //重新获取分类列表显示--相当于更新状态
           this.getCategorys()
           //console.log(this.getCategorys())
           message.success(action+'分类成功')
@@ -116,6 +117,7 @@ export default class Category extends Component {
     this.initColumns()
   }
 
+  // 发送ajax请求--获取分类列表显示
   componentDidMount(){
     this.getCategorys()
   }
@@ -129,7 +131,7 @@ export default class Category extends Component {
     //右上角按钮
     const extra = (
       <Button type="primary" onClick={()=>{
-        this.category = null
+        this.category = null  //添加用户前清空输入框
         this.setState({showStatus:1})}}>
         <Icon type="plus"/>
         添加
@@ -139,17 +141,16 @@ export default class Category extends Component {
     return (
       <Card extra={extra}>
         <Table 
-        bordered   //-----bordered={true}
+        bordered   //-----bordered={true}--边框
         rowKey="_id"
         loading={loading}
         columns={this.columns}
-        dataSource={categorys}
+        dataSource={categorys}   //所有分类的组--[{},{}]
         pagination={{ defaultPageSize: 3, showQuickJumper: true}}
         />
-
         <Modal
           title={showStatus === 1? '添加分类':'修改分类'}
-          visible={showStatus !== 0}
+          visible={showStatus !== 0}  //是否显示弹框
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >

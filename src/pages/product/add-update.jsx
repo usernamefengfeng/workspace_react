@@ -21,8 +21,8 @@ class AddUpdateProduct extends Component {
   constructor(props){
     super(props);
     //创建ref容器，并保存到组件对象中
-    this.pwRef = React.createRef()
-    this.editorRef = React.createRef()
+    this.pwRef = React.createRef()  //图片
+    this.editorRef = React.createRef()  //富文本编辑器
   }
 
   //发送请求分类名称--id
@@ -67,6 +67,7 @@ class AddUpdateProduct extends Component {
        const detail = this.editorRef.current.getDetail()
        //封装product对象
        const product = {name,desc,pirce,categoryId,imgs,detail}
+       //判断是否存在商品的id-----添加/修改
        if (this.isUpdate) {
          product._id = this.product._id
        }

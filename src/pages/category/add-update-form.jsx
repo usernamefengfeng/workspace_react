@@ -9,7 +9,7 @@ const Item = Form.Item
 */
 class AddUpdateForm extends Component {
 
-  //静态方法
+  //静态方法--限制类型
   static propTypes = {
     setForm:PropTypes.func.isRequired,
     categoryName:PropTypes.string

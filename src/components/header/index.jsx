@@ -46,7 +46,7 @@ class Header extends Component {
       if(item.key===path){
         title = item.title
       }else if(item.children){
-        //在所有的子item中查找匹配
+        //在所有的item的子item中查找匹配
         const cItem = item.children.find(cItem=>path.indexOf(cItem.key)===0)
         //如果有---匹配
         if(cItem){
@@ -59,15 +59,14 @@ class Header extends Component {
 
   //点击退出登录
   logout = ()=>{
-    // 显示确认框
+    // 显示确认框--对话框
     Modal.confirm({
       content: '确定退出吗?',
       onOk: () => {
         console.log('OK', this)//确认this指向问题
         // 删除保存的user数据
-        storageUtils.removeUser()
-        memoryUtils.user = {}
-
+        storageUtils.removeUser() //local中保存的user
+        memoryUtils.user = {}     //内存中保存的user
         // 跳转到login
         this.props.history.replace('/login')
       }
