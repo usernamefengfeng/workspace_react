@@ -30,8 +30,8 @@ export default class Category extends Component {
         title: '操作',
         width:300,
         render:(category)=> <LinkButton onClick={()=>{
-          this.category = category || '' //保存当前分类，其他地方都可以读到
-          console.log(category)
+          this.category = category  //保存当前分类，其他地方都可以读到
+          //console.log(category)
           this.setState({showStatus:2})
         }}>修改分类</LinkButton>
       },
@@ -79,8 +79,8 @@ export default class Category extends Component {
           result = await reqAddCategory(categoryName)
         }else{  //修改
           const categoryId = this.category._id
-          console.log(categoryId)  //--可以拿到
-          console.log(categoryName)
+          //console.log(categoryId)  //--可以拿到
+          //console.log(categoryName)
           result = await reqUpdateCategory({categoryId,categoryName})
           console.log(result.name)
           console.log(result)
@@ -128,7 +128,9 @@ export default class Category extends Component {
     
     //右上角按钮
     const extra = (
-      <Button type="primary" onClick={()=>{this.setState({showStatus:1})}}>
+      <Button type="primary" onClick={()=>{
+        this.category = null
+        this.setState({showStatus:1})}}>
         <Icon type="plus"/>
         添加
       </Button>

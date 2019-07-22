@@ -7,5 +7,5 @@ import storageUtils from './storageUtils'
 const user = storageUtils.getUser()//???
 export default {
   user,
-  products:{}
+  product:{}  //需要查看的商品对象
 }

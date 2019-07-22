@@ -8,6 +8,7 @@ import {
   Button,
   message
 } from 'antd'
+import throttle from 'lodash.throttle'
 
 import {reqProducts,reqSearchProducts, reqUpdateStatus} from '../../api'
 import LinkButton from '../../components/link-button'
@@ -30,7 +31,7 @@ export default class ProductHome extends Component {
   }
 
   //更新商品状态-----在售/已下架
-  updateStatus = async (productId,status) => {
+  updateStatus = throttle ( async (productId,status) => {
     
     //计算更新后的值
     status = status === 1? 2 : 1
@@ -46,7 +47,7 @@ export default class ProductHome extends Component {
       //获取当前页面
       this.getProducts(this.pageNum)
     }
-  }
+  },1000) 
 
   initColumns = () => {
     this.columns = [
@@ -66,13 +67,13 @@ export default class ProductHome extends Component {
       {
         title:'状态',
         width:100,
-        // dataIndex:'status',
+        // dataIndex:'status',//默认status===1
         render:({_id,status})=>{
           let btnText = '下架'
           let text = '在售'
           console.log(_id,status)
           if(status === 2){
-            console.log('+++++----')
+            //console.log('+++++----')
             btnText = '上架'
             text = '已下架'
           }
@@ -89,12 +90,14 @@ export default class ProductHome extends Component {
         render:(product)=>(
           <span>
             {/* 将product对象使用state传递给目标路由组件 */}
-            <LinkButton onClick={()=>{
-              //在内存中保存product
-              
-             memoryUtils.product = product
-              this.props.history.push('/product/detail')
-            }}>详情</LinkButton>
+            <LinkButton
+              onClick={()=>{
+                //在内存中保存product
+              memoryUtils.product = product
+                this.props.history.push('/product/detail')
+                }}>
+              详情
+              </LinkButton>
             <LinkButton onClick={()=>{
               //在内存中保存product
               memoryUtils.product = product
@@ -113,7 +116,7 @@ export default class ProductHome extends Component {
     const {searchType,searchName} = this.state
     //发送请求获取数据
     let result
-    if (!searchName) {
+    if (!this.isSearch) {
       result = await reqProducts(pageNum,PAGE_SIZE)
       //console.log('-----')
     } else {
@@ -162,12 +165,18 @@ export default class ProductHome extends Component {
          value={searchName}
          onChange={(event)=>this.setState({searchName:event.target.value})} 
           />
-        <Button type="primary" onClick={()=>this.getProducts(1)} >搜索</Button>
+        <Button type="primary" onClick={()=>{
+          this.isSearch = true
+          this.getProducts(1)
+        }} >搜索</Button>
       </span>
     )
     
     const extra = (
-      <Button type='primary' >
+      <Button type='primary' onClick={()=>{
+        memoryUtils.product = {}
+        this.props.history.push('/product/addupdate')
+      }}>
         <Icon type='plus' />
         添加商品
       </Button>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import {Card, Icon, Select, Input, Form, Button } from 'antd'
+import {Card, Icon, Select, Input, Form, Button, message} from 'antd'
 
 import LinkButton from '../../components/link-button'
-//import PicturesWall from './pictures-wall'
+import PicturesWall from './pictures-wall'
+import RichTextEditor from './rich-text-editor'
 import memoryUtils from '../../utils/memoryUtils'
-import {reqCategorys} from '../../api'
+import {reqCategorys,reqAddUpdateProduct} from '../../api'
 
 const Item = Form.Item
 const Option = Select.Option
@@ -15,6 +16,13 @@ class AddUpdateProduct extends Component {
 
   state = {
     categorys:[]
+  }
+
+  constructor(props){
+    super(props);
+    //创建ref容器，并保存到组件对象中
+    this.pwRef = React.createRef()
+    this.editorRef = React.createRef()
   }
 
   //发送请求分类名称--id
@@ -48,10 +56,30 @@ class AddUpdateProduct extends Component {
    //阻止事件的默认行为(提交表单)
    event.preventDefault()
    //进行统一的表单验证
-   this.props.form.validateFields((err,values) => {
-    //  if (!err) {
-    //    const {name,desc,pirce,categoryId} = values
-    //  }
+   this.props.form.validateFields( async (err,values) => {
+     if (!err) {
+       const {name,desc,pirce,categoryId} = values
+
+       //收集上传的图片文件名数组
+       const imgs = this.pwRef.current.getImgs()
+
+       //输入商品详情的标签字符串
+       const detail = this.editorRef.current.getDetail()
+       //封装product对象
+       const product = {name,desc,pirce,categoryId,imgs,detail}
+       if (this.isUpdate) {
+         product._id = this.product._id
+       }
+       //发送请求添加或修改--商品
+       const result = await reqAddUpdateProduct(product)
+       //判断成功状态
+       if (result.status === 0) { //成功
+         message.success(`${this.isUpdate ? '修改' : '添加'}商品成功`)
+         this.props.history.replace('/product')
+       } else {
+         message.error(result.msg)
+       }
+     }
    })
   }
 
@@ -68,7 +96,7 @@ class AddUpdateProduct extends Component {
 
     //读取携带过来的state数据 
     const {categorys} = this.state
-    const {product} = this
+    const {isUpdate,product} = this
     const {getFieldDecorator} = this.props.form
 
     const title = (
@@ -79,7 +107,7 @@ class AddUpdateProduct extends Component {
           style={{marginRight:10,fontSize:20}}
           />
         </LinkButton>
-        <span>商品添加</span>
+        <span>{isUpdate ? '修改商品':'添加商品'}</span>
       </span>
     )
 
@@ -133,10 +161,11 @@ class AddUpdateProduct extends Component {
             )}
           </Item>
           <Item label='商品图片'>
-            <div>商品图片组件</div>
+            {/* 将容器交给需要标记的标签对象, 在解析时就会自动将标签对象保存到容器中(属性名为: current, 属性值标签对象) */}
+            <PicturesWall ref={this.pwRef} imgs={product.imgs} />
           </Item>
-          <Item label='商品详情'>
-            <div>商品详情组件</div>
+          <Item label='商品详情' wrapperCol={{ span: 20 }}>
+            <RichTextEditor ref={this.editorRef} detail={product.detail} />
           </Item>
           <Item>
             <Button type='primary' htmlType='submit'>提交</Button>
