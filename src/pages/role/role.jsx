@@ -32,7 +32,7 @@ export default class Role extends Component {
   }
 
   /* 
-    初始胡table列数组
+    初始化table列数组
   */
   initColumn = () => {
     this.columns = [

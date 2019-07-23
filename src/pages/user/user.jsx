@@ -87,7 +87,7 @@ export default class User extends Component {
   //添加更新用户
   addOrUpdateUser = () => {
 
-    this.setState({isShow:false})
+    this.setState({isShow:false})  //更新状态
     
     this.form.validateFields( async (err,values)=>{
       if (!err) {
@@ -95,7 +95,6 @@ export default class User extends Component {
         if (this.user) {
           values._id = this.user._id
         }
-
         const result = await reqAddOrUpdateUser(values)
         if (result.status === 0) {
           message.success('添加/更新用户成功')
