@@ -73,11 +73,13 @@ export default class Role extends Component {
   //异步获取角色列表显示
   getRoles = async () => {
     const result = await reqRoles()
+    console.log(result)
     if (result.status === 0) {
-      const relos = result.data
+      const roles = result.data
       this.setState({
-        relos
+        roles
       })
+      console.log(this.state.roles)
     }
   }
   //添加角色
@@ -90,6 +92,7 @@ export default class Role extends Component {
           isShowAdd:false
         })
         const result = await reqAddRole(values.roleName)
+        console.log(values)
         if (result.status === 0) {
           message.success('添加角色成功')
           this.getRoles()
@@ -107,14 +110,17 @@ export default class Role extends Component {
     })
     const {role} = this
     //更新role对象相关属性
-    role.menus = this.authRef.current.getMenus()
+    role.menus = this.authRef.current.getMenus
     role.auth_name = memoryUtils.user.username
     role.auth_time = Date.now()
     //请求更新角色
     const result = await reqUpdateRole(role)
     if (result.status === 0) {
       message.success('角色授权成功')
-      this.getRoles()
+      //this.getRoles()
+      this.setState({
+        roles:[...this.state.roles]
+      })
     } else {
       message.error(result.msg)
     }

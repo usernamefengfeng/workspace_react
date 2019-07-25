@@ -20,6 +20,14 @@ class AuthForm extends Component {
     role: PropTypes.object
   }
 
+  constructor (props) {
+    super(props)
+    // 根据传入角色的menus生成初始状态
+    const { menus } = this.props.role
+    this.state = {
+      checkedKeys: menus
+    }
+  }
   state = {
     checkedKeys: []
   }
