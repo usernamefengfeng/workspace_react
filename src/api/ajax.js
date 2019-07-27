@@ -6,7 +6,7 @@
 */
 
 import axios from 'axios'
-import qs from 'qs'  //转换数据格式为urlencoded
+import qs from 'qs'  //将JSON格式转换数据格式为urlencoded
 import { message } from 'antd'
 
 

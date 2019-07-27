@@ -26,7 +26,7 @@ export const reqLogin = (username,password) =>ajax.post(BASE+'/login',{username,
 } */
 
 
-//jsonp请求的接口-----天气
+//jsonp--跨域--请求的接口-----天气
 export const reqWeather = (city) => {
   return new Promise((resolve,reject)=>{
     const url = `http://api.map.baidu.com/telematics/v3/weather?location=${city}&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
